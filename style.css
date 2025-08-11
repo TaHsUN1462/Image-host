@@ -49,3 +49,10 @@ form input{
   border-radius: 20px;
   padding: 10px;
 }
+.list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
