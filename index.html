@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV Images</title>
   <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-  <title>Document</title>
 </head>
 <body>
-  <div class="listImages"></div>
-  <script src="https://cdn.jsdelivr.net/npm/es6-promise/dist/es6-promise.auto.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script type="text/javascript" charset="utf-8" src="script.js"></script>
+  <div id="listImages">Loading...</div>
+
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/images', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var images = JSON.parse(xhr.responseText);
+        var container = document.getElementById('listImages');
+        container.innerHTML = '';
+
+        if (images.length === 0) {
+          container.innerHTML = 'No images added yet';
+        } else {
+          for (var i = 0; i < images.length; i++) {
+            var card = document.createElement('div');
+            card.className = 'card';
+
+            var p = document.createElement('p');
+            p.innerHTML = images[i].name;
+
+            var img = document.createElement('img');
+            img.src = images[i].url;
+            img.width = 200;
+            img.onclick = function(e) {
+              if (e.target.requestFullscreen) e.target.requestFullscreen();
+              else if (e.target.webkitRequestFullscreen) e.target.webkitRequestFullscreen();
+              else if (e.target.msRequestFullscreen) e.target.msRequestFullscreen();
+            };
+
+            card.appendChild(p);
+            card.appendChild(img);
+            container.appendChild(card);
+          }
+        }
+      }
+    };
+    xhr.send();
+  </script>
 </body>
 </html>
