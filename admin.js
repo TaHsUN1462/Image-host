@@ -18,6 +18,7 @@ async function sendFile(form){
   }else{
     alert("Uploded")
     form.reset()
+    document.querySelector('.preview').style.display = "none";
   }
   displayImages()
 }
@@ -29,37 +30,28 @@ async function displayImages() {
     console.error(error);
     return;
   }
-  console.log("Fetched");
   // Filter out placeholder or hidden files starting with '.'
   const images = data ? data.filter(item => !item.name.startsWith('.')) : [];
+  console.log("Fetched: ", images.length);
 
   // Clear previous images/messages (optional)
-  const existingMessage = document.getElementById('no-images-message');
-  if (existingMessage) existingMessage.remove();
 
   if (images.length === 0) {
     // Show "No images added" message
-    const msg = document.createElement('p');
-    msg.id = 'no-images-message';
-    msg.textContent = 'No Images added';
-    document.body.appendChild(msg);
-    return;
+    document.querySelector('.list').innerHTML = "No image added";
   }
-
   // Display images
+    document.querySelector('.list').innerHTML = "";
   for (let i = 0; i < images.length; i++) {
-  document.querySelector('.list').innerHTML = "";
     const url = supa.storage.from("images").getPublicUrl(images[i].name).data.publicUrl;
-    let div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
+    let card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
     <p>${images[i].name}</p>
     <img onclick="fullscreen(event)" src="${url}" alt="image" width="100">
     <button onclick="deleteImage('${images[i].name}')">Delete</button>
     `
-    document.querySelector('.list').appendChild(div);
-    console.clear()
-    console.log(publicURL);
+    document.querySelector('.list').appendChild(card);
   }
 }
 function deleteImage(imageName){
