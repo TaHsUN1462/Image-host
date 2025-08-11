@@ -9,7 +9,7 @@
 
   <script>
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://https://proxy-9s9l.onrender.com/images', true);
+    xhr.open('GET', 'https://proxy-9s9l.onrender.com/images', true);
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
         var images = JSON.parse(xhr.responseText);
